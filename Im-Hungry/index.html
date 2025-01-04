@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I'm Hungry</title>
+    <!--link to external CSS file-->
+    <link rel="stylesheet" href="styles.css">
+    <!--link to font awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+</head>
+<body>
+    <div id="logo">
+        <i class="fas fa-utensils"></i> I'm Hungry
+    </div>
+
+    <div id="search">
+        <input type="text" id="location" placeholder="Enter a city"> 
+        <button id="findRestaurants" class="btn">Find Restaurants</button>
+        <button id="useLocation" class="btn">Use My Location</button>
+    </div>
+
+    <div id="map"></div> 
+    <div id="results"></div>
+    <!-- google maps API script with your API key -->
+    <script src ="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdsG5UlMT7LNHWNpGa5ZyHA4W2x8JEHqI&libraries=places&callback=initMap" async defer></script>
+    <!--link to the external JS file-->
+    <script src="app.js"></script>
+</body> 
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+          rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Review Flashcards</title>
+    <style>
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        #card {
+            width: 100%; 
+            background-color: #fafafa;
+            border: 1px solid gray;
+            border-radius: 10px; 
+            height: 300px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .vcenter-item {
+            display: flex;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <h1>Review Flashcards</h1>
+        </div> 
+        <div class="row">
+            <div class="col">
+                <div id="card" class="p-3">
+                    <h3 id="frontCard"></h3> 
+                    <h3 id="backCard"></h3>
+                </div>
+            </div>
+            <p>Card #<output id="cardNum"></output></p>
+            <button type="button" class="btn btn-primary btn-lg w-100 mt-3" id="btnFlip">Flip Card</button>
+            <a href="index.html" class="btn btn-primary mt-3">Back to Main Page</a>
+
+        </div>
+        <div class="col">
+            <h2>Instructions</h2>
+            <p>Click on the card to move to the next one. Use the "Flip Card" button to view the back side.</p>
+            <p>Number of FlashCards: <output id="numCards"></output></p>
+        </div>
+    </div>
+     <!-- Flashcard List -->
+     <h2>My Flashcards</h2>
+     <div id="flashcardList" class="row"></div>
+    <!-- Modal for Editing Flashcards -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Flashcard</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="editFrontCard" class="form-label">Front</label>
+                            <input type="text" class="form-control" id="editFrontCard">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editBackCard" class="form-label">Back</label>
+                            <input type="text" class="form-control" id="editBackCard">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveEditBtn">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="localForage.min.js"></script>
+    <script src="reviewcards.js"></script>
+</body>
+</html>

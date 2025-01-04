@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Water Intake Tracker</title>
+        <!-- Link to Bulma CSS framework-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+        <link rel="stylesheet" href="water_index.css">
+    </head>
+
+    <body style="background-color: gainsboro;">
+        <section class="section">
+            <div class="container">
+                <h1 class="title has-text-centered">Daily Water Intake Tracker</h1>
+                <!-- Water intake Input -->
+                <div class="field">
+                    <label class="label">Enter Water Intake (ml)</label>
+                    <div class="control">
+                        <input class="input" type="number" id="waterAmount" placeholder="e.g., 250">
+                    </div>
+                </div>
+
+                <!-- Date Input -->
+                <div class="field">
+                    <label class="label">Enter Date</label>
+                    <div class="control">
+                        <input class="input" type="date" id="waterDate" value="">
+                    </div>
+                </div>
+
+                <!-- Log Water Button-->
+                <div class="is-centered" style="max-width: 400px; margin: 0 auto;">
+                    <div class="control">
+                        <button class="button is-link is-fullwidth mb-4" id="logWater">Log Water</button>
+                    </div>
+                </div>
+
+                <!-- Daily Total Display -->
+                <div class="box">
+                    <h2 class="subtitle">Your Daily Total</h2>
+                    <p id="dailyTotal">Total: 0 ml</p>
+                </div>
+
+                <!-- Water progress chart -->
+                <div class="box">
+                    <h2 class="subtitle">Your Progress</h2>
+                    <canvas id="waterProgressChart"></canvas>
+                </div>
+
+                <!-- Weekly and Monthly Buttons -->
+                <div class="control">
+                    <button class="button is-primary is-fullwidth mb-4" id="viewWeekly">7-Day View</button>
+                    <button class="button is-link is-fullwidth mb-4" id="viewMonthly">1-Month View</button>
+                </div>
+
+                <!-- Set Reminder Section-->
+                <div class="box">
+                    <h2 class="subtitle">Set Reminder</h2>
+                    <div class="field">
+                        <label class="label">Reminder Interval (minutes)</label>
+                        <div class="control">
+                            <input class="input" type="number" id="reminderInterval" placeholder="e.g., 30">
+                        </div>
+                    </div>
+                    <div class="control">
+                        <button class="button is-warning is-fullwidth" id="setReminder">Set Reminder</button>
+                    </div>
+                </div>
+                <!-- Reset Button -->
+                <div class="control">
+                    <button class="button is-dark is-fullwidth" id="resetWater">Reset Water Intake</button>
+                </div>
+            </div>
+        </section>
+
+        <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/lockr@0.8.4/lockr.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="water_index.js"></script>
+    </body>
+
+</html>
