@@ -1,0 +1,30 @@
+# Node.js dependencies
+
+Flashcards/
+Im-Hungry/
+Water-Tracker/
+node_modules/
+
+
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+
+# System files
+.DS_Store
+
+# Cache and temp files
+.cache/
+.next/
+dist/
+tmp/
+
+# Build output
+build/
+out/
+
+# Others
+.vscode/

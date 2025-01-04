@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andrew's Portfolio</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <a href="#hero">Home</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+    <main>
+      <section id="hero">
+        <h1>
+        </h1>
+        <p>Web Developer | Problem Solver | Lifelong Learner</p>
+      </section>
+
+      <section id="about">
+        <div class="container">
+          <h2>About Me</h2>
+          <p>
+            My name is Andrew, and I am a dedicated single father of four amazing kids. Balancing parenthood and
+            personal growth has taught me resilience, adaptability, and a profound appreciation for life's
+            opportunities. I am passionate about web development and continuously strive to enhance my skills to build
+            innovative, user-friendly solutions. As a lifelong learner, I believe in leading by example for my children,
+            showing them the importance of perseverance and embracing challenges. In my professional journey, I aim to
+            combine my technical expertise with creativity to make a meaningful impact.
+          </p>
+        </div>
+      </section>
+
+      <section id="projects">
+        <h2>My Projects</h2>
+
+        <!-- Im Hungry Project -->
+        <div class="project-card">
+          <img src="img/imhungry-cover.jpg" alt="I'm Hungry App">
+          <p>The "I'm Hungry" App is a user-friendly tool designed to help you find restaurants nearby or in a specified location. Featuring geolocation, interactive maps, and detailed restaurant information, it makes discovering your next meal simple and enjoyable.</p>
+          <a href="Im-Hungry/index.html" target="_blank"><button>View Project</button></a><br>
+          <a href="https://github.com/drewzin777/Im-Hungry" target="_blank" class="text-link">
+            <i class="fab fa-github"></i>View Code
+          </a>
+        </div>
+
+        <div class="project-card">
+          <img src="img/watertracker-cover.jpg" alt="Water Tracker App">
+          <p>The Water Tracker App helps users maintain proper hydration by logging daily water intake, setting personalized hydration goals, and visualizing progress with easy-to-read charts.</p>
+          <a href="Water-Tracker/water_index.html" target="_blank"><button>View Project</button></a>
+          <a href="https://github.com/drewzin777/water-tracker-app" target="_blank" class="text-link">
+            <i class="fab fa-github"></i>View Code
+        </div>
+
+        <div class="project-card">
+          <img src="img/flashcards-cover.jpg" alt="Flashcards App">
+          <p>The Flashcards App is an intuitive and interactive tool for studying and memorization. Users can create, organize, and review digital flashcards to enhance their learning experience.</p>
+          <a href="Flashcards/index.html" target="_blank"><button>View Project</button></a>
+          <a href="https://github.com/drewzin777/Flashcards" target="_blank" class="text-link">
+            <i class="fab fa-github"></i>View Code
+        </div>
+
+        <div class="project-card">
+          <img src="img/goal-cover.jpg" alt="Goal-tracker App">
+          <p>The Goal-tracker is a simple application designed to help the user track daily goals. The app allows you to mark a goal once complete, as well as clear your days goals and start a new day.</p>
+          <a href="Goal-Tracker/" target="_blank"><button>View Project</button></a>
+          <a href="https://github.com/drewzin777/Goal-Tracker" target="_blank" class="text-link">
+            <i class="fab fa-github"></i>View Code
+        </div>
+
+      </section>
+
+      <section id="contact">
+        <h2>Contact Me</h2>
+        <form action="https://formspree.io/f/xjkvjepz" method="POST">
+          <!-- Email Field -->
+          <label for="email">Your Email:</label>
+          <input type="email" id="email" name="email" required>
+
+          <!-- Message Field -->
+          <label for="message">Your Message:</label>
+          <textarea id="message" name="message" rows="4" required></textarea>
+
+          <!-- Submit Button -->
+          <button type="submit">Send</button>
+        </form>
+      </section>
+
+    </main>
+    <footer>
+      <p>© 2024 Andrew Amento. All rights reserved.</p>
+    </footer>
+  </body>
+
+</html>
