@@ -1,6 +1,4 @@
- require('dotenv').config();
- 
- //initialize map
+
 let map; 
 let service;  
 let infowindow; 
