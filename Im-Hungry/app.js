@@ -1,3 +1,5 @@
+ require('dotenv').config();
+ 
  //initialize map
 let map; 
 let service;  
@@ -13,7 +15,7 @@ function initMap() {
         //if a place_id exists were on details page 
         initializeDetailsPage(place_Id);
     } else {
-        //if no place_id were on the index(main)page
+        console.log('Initializing main page...');
         initializeMainPage();
     }
 }
@@ -241,8 +243,17 @@ function handlePlaceDetails(place, status) {
 }
 
 
-//initialize map when page loads
-window.onload = initMap;
+
+const apiKey = GOOGLE_MAPS_API_KEY;      //Netlify injects this on deployment
+
+// Dynamically load Google Maps API script
+const script = document.createElement('script');
+script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+script.async = true;
+script.defer = true;
+document.body.appendChild(script);
+
+
 
 
 
