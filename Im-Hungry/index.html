@@ -23,8 +23,21 @@
 
     <div id="map"></div> 
     <div id="results"></div>
-    <!-- google maps API script with your API key -->
-    <script src ="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_PLACEHOLDER&callback=initMap" async defer></script>
+    <!-- Google Maps API key -->
+    <script>
+        const apiKey = "${GOOGLE_MAPS_API_KEY}";
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+        document.body.appendChild(script);
+    
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: -34.397, lng: 150.644 },
+                zoom: 8,
+            });
+        }
+    </script>
+    
     <!--link to the external JS file-->
     <script src="app.js"></script>
 </body> 
