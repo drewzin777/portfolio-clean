@@ -242,7 +242,7 @@ function handlePlaceDetails(place, status) {
 
 
 
-const apiKey = GOOGLE_MAPS_API_KEY;      //Netlify injects this on deployment
+const apiKey = "GOOGLE_MAPS_API_KEY";      //Netlify injects this on deployment
 console.log("Injected API Key:", apiKey);
 // Dynamically load Google Maps API script
 
