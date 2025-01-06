@@ -3,6 +3,29 @@ let map;
 let service;  
 let infowindow; 
 
+//Fetch the API Key 
+// Fetch the API key securely from the Netlify function
+fetch('/.netlify/functions/getApiKey')
+    .then(response => response.json())
+    .then(data => {
+        const apiKey = data.apiKey; // Retrieved securely from Netlify
+        console.log("Fetched API Key:", apiKey);
+
+        // Dynamically load Google Maps API script
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&libraries=places`;
+        script.async = true;
+        script.defer = true;
+
+        document.body.appendChild(script);
+
+        console.log("Google Maps API script added.");
+    })
+    .catch(error => {
+        console.error("Error fetching API Key:", error);
+        alert("Failed to load the Google Maps API. Please try again.");
+    });
+
 function initMap() {
     //get place_Id from the URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -242,24 +265,6 @@ function handlePlaceDetails(place, status) {
 
 
 
-const apiKey = "GOOGLE_MAPS_API_KEY";      //Netlify injects this on deployment
-console.log("Injected API Key:", apiKey);
-// Dynamically load Google Maps API script
-
-
-
-if (apiKey) {
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
-    script.async = true;
-    script.defer = true;
-
-    document.body.appendChild(script);
-
-    console.log("Google Maps API script added.");
-} else {
-    console.error("GOOGLE_MAPS_API_KEY is undefined. Ensure it's set in Netlify environment variables.");
-}
 
 
 
