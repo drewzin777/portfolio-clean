@@ -25,3 +25,6 @@ out/
 
 # Others
 .vscode/
+
+# Local Netlify folder
+.netlify
