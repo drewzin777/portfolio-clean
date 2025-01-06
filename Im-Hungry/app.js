@@ -243,13 +243,24 @@ function handlePlaceDetails(place, status) {
 
 
 const apiKey = GOOGLE_MAPS_API_KEY;      //Netlify injects this on deployment
-
+console.log("Injected API Key:", apiKey);
 // Dynamically load Google Maps API script
-const script = document.createElement('script');
-script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
-script.async = true;
-script.defer = true;
-document.body.appendChild(script);
+
+
+
+if (apiKey) {
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+    script.async = true;
+    script.defer = true;
+
+    document.body.appendChild(script);
+
+    console.log("Google Maps API script added.");
+} else {
+    console.error("GOOGLE_MAPS_API_KEY is undefined. Ensure it's set in Netlify environment variables.");
+}
+
 
 
 
