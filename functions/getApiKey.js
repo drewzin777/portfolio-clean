@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 exports.handler = async () => {
     if (!process.env.GOOGLE_MAPS_API_KEY) {
         return {

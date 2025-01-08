@@ -26,8 +26,8 @@ let infowindow;
         alert("Failed to load the Google Maps API. Please try again.");
     });
  
-
-function initMap() {
+//Define the global initMap function
+window.initMap = function() {
     //get place_Id from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const place_Id = urlParams.get('place_id');
@@ -40,7 +40,7 @@ function initMap() {
         console.log('Initializing main page...');
         initializeMainPage();
     }
-}
+};
    
     //main page (index.html): search for nearby restaurants
     function initializeMainPage() {
