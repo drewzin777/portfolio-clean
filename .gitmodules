@@ -1,0 +1,3 @@
+[submodule "guess-the-word"]
+	path = guess-the-word
+	url = https://github.com/drewzin777/guess-the-word.git
