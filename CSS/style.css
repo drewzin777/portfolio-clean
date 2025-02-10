@@ -8,6 +8,10 @@ body {
   color: #333;
 }
 
+html, body {
+  overflow: auto;
+}
+
 header {
   background: #003366;
   color: #fff;
