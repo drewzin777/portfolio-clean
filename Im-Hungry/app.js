@@ -11,6 +11,12 @@ let infowindow;
        const apiKey = data.apiKey;           // Retrieved securely from Netlify
        console.log("Fetched API Key:", apiKey);
 
+       if (!apiKey || apiKey.length < 30) {
+        console.error("Invalid API Key received:", apiKey);
+        alert("The API key is missing or incorrect. Please check your Netlify environment variables.");
+        return;
+    }
+
        // Dynamically load Google Maps API script
        const script = document.createElement('script');
        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&libraries=places`;
