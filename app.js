@@ -87,6 +87,49 @@ window.initMap = function() {
         });
     }
 
+    //display Restaurants function
+    function displayRestaurants(restaurants) {
+        const restaurantList = document.getElementById("results");
+        restaurantList.innerHTML = "";  // Clear any previous results
+    
+        // If no restaurants were found
+        if (restaurants.length === 0) {
+            restaurantList.innerHTML = "<li>No restaurants found.</li>";
+            return;
+        }
+    
+        // Loop through the returned restaurants and create a list item for each
+        restaurants.forEach((restaurant) => {
+            const li = document.createElement("li");
+            
+            // Display restaurant name
+            li.textContent = restaurant.name;
+    
+            // Optionally: Display address if available
+            if (restaurant.vicinity) {
+                const address = document.createElement("p");
+                address.textContent = `Address: ${restaurant.vicinity}`;
+                li.appendChild(address);
+            }
+    
+            // Add a click listener to redirect to the restaurant details page
+            li.addEventListener("click", () => {
+                window.location.href = `restaurant-detail.html?place_id=${restaurant.place_id}`;
+            });
+    
+            // Append the list item to the results section
+            restaurantList.appendChild(li);
+    
+            // Add a marker on the map for each restaurant
+            new google.maps.Marker({
+                position: restaurant.geometry.location,
+                map: map,
+                title: restaurant.name,
+            });
+        });
+    }
+    
+
     //get user's location using the browser's API
     function getUserLocation() {
     try{
