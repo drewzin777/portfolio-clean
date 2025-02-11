@@ -70,10 +70,15 @@ window.initMap = function() {
         if (locationInput) {
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ address: locationInput }, (results, status) => {
+                console.log("Geocoder status:", status); // Debugging
+                console.log("Geocoder results:", results); // Debugging
+
                 if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
                     const lat = results[0].geometry.location.lat();
                     const lng = results[0].geometry.location.lng(); 
                     const location = { lat: lat, lng: lng };
+
+                    console.log("Geocoded location:", location); // Debugging
                     searchNearbyRestaurants(location);
                 } else if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {
                     alert('No results found for the specified location. Please check the input and try again.');
@@ -82,10 +87,10 @@ window.initMap = function() {
                 }
                 });
             } else {
-            alert('Plese enter a city.');
+            alert('Please enter a city.');
             }
         });
-    }
+    
 
     //display Restaurants function
     function displayRestaurants(restaurants) {
