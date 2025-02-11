@@ -136,12 +136,21 @@ window.initMap = function() {
     
         const request = {
             location: location,
-            radius: '1500',
+            radius: '5000',
             type: ['restaurant'],
     };
 
     service = new google.maps.places.PlacesService(map);
-    service.nearbySearch(request, handleResults);
+    service.nearbySearch(request, (results, status) => {
+        console.log("Nearby Search Status:", status);  // Debugging
+        console.log("Nearby Search Results:", results);  // Debugging
+        
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            displayRestaurants(results);
+        } else {
+            console.error("Nearby Search Error:", status);
+        }
+    });
 }
 
 //details page (restaurant-details.html): show details for a single restaurant 
