@@ -6,32 +6,37 @@ let infowindow;
 
  //Fetch the API key securely from the Netlify function
  fetch('/.netlify/functions/getApiKey')
-       .then(response => response.json())
-       .then(data => {
-       const apiKey = data.apiKey;           // Retrieved securely from Netlify
-       console.log("Fetched API Key:", apiKey);
+    .then(response => response.json())
+    .then(data => {
+        const apiKey = data.apiKey;
+        console.log("Fetched API Key:", apiKey);
 
-       if (!apiKey || apiKey.length < 30) {
-        console.error("Invalid API Key received:", apiKey);
-        alert("The API key is missing or incorrect. Please check your Netlify environment variables.");
-        return;
-    }
+        if (!apiKey || apiKey.length < 30) {
+            console.error("Invalid API Key received:", apiKey);
+            alert("The API key is missing or incorrect. Please check your Netlify environment variables.");
+            return;
+        }
 
-       // Dynamically load Google Maps API script
-       const script = document.createElement('script');
-       script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&libraries=places`;
-       script.async = true;
-       script.defer = true;
+        // Dynamically load Google Maps API script
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+        script.async = true;
+        script.defer = true;
 
-       document.body.appendChild(script);
+        //  Ensure initMap is only called after script loads
+        script.onload = () => {
+            console.log("Google Maps API script loaded.");
+            initMap();
+        };
 
-       console.log("Google Maps API script added.");
-   })
+        document.body.appendChild(script);
+        console.log("Google Maps API script added.");
+    })
     .catch(error => {  
         console.error("Error fetching API Key:", error);
         alert("Failed to load the Google Maps API. Please try again.");
     });
- 
+
 //Define the global initMap function
 window.initMap = function() {
     //get place_Id from the URL
@@ -90,7 +95,7 @@ window.initMap = function() {
             alert('Please enter a city.');
             }
         });
-    
+    }
 
     //display Restaurants function
     function displayRestaurants(restaurants) {
@@ -326,9 +331,6 @@ function handlePlaceDetails(place, status) {
         console.error('Failed to get place details ', status);
     }
 }
-
-
-
 
 
 
