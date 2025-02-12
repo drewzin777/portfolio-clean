@@ -132,6 +132,7 @@ function searchNearbyRestaurants(location) {
 }
 
 
+
 //display Restaurants function
 function displayRestaurants(restaurants) {
     console.log("📌 Received Restaurants:", restaurants);
