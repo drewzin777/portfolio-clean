@@ -4,21 +4,27 @@ let map;
 let service;
 let infowindow;
 
-// 🔥 Hardcoded API Key - Temporarily Testing Without Netlify
-const apiKey = "AIzaSyCcyVICGCnREii7-KxsjQkLi6gaxyJXi18";  // ⬅️ Replace with your actual API Key
+fetch('/.netlify/functions/getApiKey')
+    .then(response => response.json())
+    .then(data => {
+        if (data.apiKey) {
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${data.apiKey}&libraries=places`;
+            script.async = true;
+            script.defer = true;
 
-const script = document.createElement('script');
-script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-script.async = true;
-script.defer = true;
+            script.onload = () => {
+                console.log("✅ Google Maps API script loaded.");
+                initMap();
+            };
 
-script.onload = () => {
-    console.log("✅ Google Maps API script loaded.");
-    initMap();
-};
-
-document.body.appendChild(script);
-console.log("✅ Google Maps API script added successfully.");
+            document.body.appendChild(script);
+            console.log("✅ Google Maps API script added successfully.");
+        } else {
+            console.error("❌ API key not found. Check Netlify environment variables.");
+        }
+    })
+    .catch(error => console.error("❌ Error fetching API key:", error));
 
 
 // 3️⃣ Initialize the map
