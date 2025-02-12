@@ -97,40 +97,77 @@ function initializeMainPage() {
     });
 }
 
+function searchNearbyRestaurants(location) {
+    if (!location || !location.lat || !location.lng) {
+        console.error("Invalid location:", location);
+        return;
+    }
+
+    const latLng = new google.maps.LatLng(location.lat, location.lng);
+    map.setCenter(latLng);
+
+    const request = {
+        location: latLng,
+        radius: 5000,
+        type: ["restaurant"]
+    };
+
+    if (!service) {
+        service = new google.maps.places.PlacesService(map);
+    }
+
+    console.log("📡 Sending Places API Request:", request);
+
+    service.nearbySearch(request, (results, status) => {
+        console.log("🔍 Nearby Search Status:", status);
+        console.log("📊 Nearby Search Results:", results);
+
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            displayRestaurants(results);
+        } else {
+            console.error("❌ Places API Error:", status);
+            alert(`Google Places API Error: ${status}`);
+        }
+    });
+}
+
+
 //display Restaurants function
 function displayRestaurants(restaurants) {
-    const restaurantList = document.getElementById("results");
-    restaurantList.innerHTML = "";  // Clear any previous results
+    console.log("📌 Received Restaurants:", restaurants);
 
-    // If no restaurants were found
-    if (restaurants.length === 0) {
+    const restaurantList = document.getElementById("results");
+    restaurantList.innerHTML = ""; // Clear any previous results
+
+    if (!restaurants || restaurants.length === 0) {
+        console.warn("❌ No restaurants found.");
         restaurantList.innerHTML = "<li>No restaurants found.</li>";
         return;
     }
 
-    // Loop through the returned restaurants and create a list item for each
+    // Loop through each restaurant and add it to the list
     restaurants.forEach((restaurant) => {
-        const li = document.createElement("li");
+        console.log("✅ Processing Restaurant:", restaurant.name);
 
-        // Display restaurant name
+        const li = document.createElement("li");
         li.textContent = restaurant.name;
 
-        // Optionally: Display address if available
+        // Display address if available
         if (restaurant.vicinity) {
             const address = document.createElement("p");
-            address.textContent = `Address: ${restaurant.vicinity}`;
+            address.textContent = `📍 Address: ${restaurant.vicinity}`;
             li.appendChild(address);
         }
 
-        // Add a click listener to redirect to the restaurant details page
+        // Redirect to details page on click
         li.addEventListener("click", () => {
             window.location.href = `restaurant-detail.html?place_id=${restaurant.place_id}`;
         });
 
-        // Append the list item to the results section
+        // Append to results list
         restaurantList.appendChild(li);
 
-        // Add a marker on the map for each restaurant
+        // Add marker to the map
         new google.maps.Marker({
             position: restaurant.geometry.location,
             map: map,
@@ -138,7 +175,6 @@ function displayRestaurants(restaurants) {
         });
     });
 }
-
 
 //get user's location using the browser's API
 function getUserLocation() {
@@ -181,41 +217,6 @@ function errorCallback(error) {
             alert('An unknown error occured.');
             break;
     }
-}
-
-//function to search nearby restaurants based on location
-function searchNearbyRestaurants(location) {
-    if (!location || !location.lat || !location.lng) {
-        console.error("Invalid location:", location);
-        return;
-    }
-
-    const latLng = new google.maps.LatLng(location.lat, location.lng);  // Convert location
-    map.setCenter(latLng);
-
-    const request = {
-        location: latLng,
-        radius: 5000,  
-        type: ['restaurant']
-    };
-
-    if (!service) {
-        service = new google.maps.places.PlacesService(map);
-    }
-
-    console.log("Places API Request:", request);  // Debugging
-
-    service.nearbySearch(request, (results, status) => {
-        console.log("Nearby Search Status:", status);  // Debugging
-        console.log("Nearby Search Results:", results);  // Debugging
-
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            displayRestaurants(results);
-        } else {
-            console.error("Nearby Search Error:", status);
-            alert(`Google Places API Error: ${status}`);
-        }
-    });
 }
 
 //details page (restaurant-details.html): show details for a single restaurant 
