@@ -103,7 +103,7 @@ function searchNearbyRestaurants(location) {
         return;
     }
 
-    const latLng = new google.maps.LatLng(location.lat, location.lng);
+    const latLng = new google.maps.LatLng(location.lat(), location.lng()); // Ensure function call
     map.setCenter(latLng);
 
     const request = {
@@ -123,15 +123,18 @@ function searchNearbyRestaurants(location) {
         console.log("📊 Nearby Search Results:", results);
 
         if (status === google.maps.places.PlacesServiceStatus.OK) {
+            if (!results || results.length === 0) {
+                console.warn("⚠️ No restaurants found.");
+                alert("No restaurants found. Try another location.");
+                return;
+            }
             displayRestaurants(results);
         } else {
-            console.error("❌ Places API Error:", status);
+            console.error(`❌ Places API Error: ${status}`);
             alert(`Google Places API Error: ${status}`);
         }
     });
 }
-
-
 
 //display Restaurants function
 function displayRestaurants(restaurants) {
