@@ -103,56 +103,54 @@ function searchNearbyRestaurants(location) {
 
     console.log("📡 Sending Places API Request:", request);
 
-    // ✅ Wrap nearbySearch in a Promise to properly catch errors
-    new Promise((resolve, reject) => {
+    try {
         service.nearbySearch(request, (results, status) => {
+            console.log("🔍 Nearby Search Fired!");
             console.log("🔍 Nearby Search Status:", status);
-            console.log("📊 API Response:", results);
 
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 console.log("✅ Restaurants Found:", results);
-                resolve(results);
+                displayRestaurants(results);
             } else {
                 console.error(`❌ Google Places API Error: ${status}`);
                 console.error("🔴 Full API Response:", JSON.stringify(results, null, 2));
-
-                reject(new Error(`Google Places API Error: ${status}`));
+                alert(`Google Places API Error: ${status}`);
             }
         });
-    })
-    .then(results => {
-        displayRestaurants(results);
-    })
-    .catch(error => {
-        console.error("⚠️ Promise Rejected:", error);
+    } catch (error) {
+        console.error("⚠️ Caught Error in Places API request:", error);
         alert(`Google Places API Error: ${error.message}`);
-    });
+    }
 }
+
+
 
 
 // 6️⃣ Function to display restaurants (runs AFTER search)
 function displayRestaurants(restaurants) {
-    console.log("✅ Received Restaurants:", restaurants);
+    console.log("📃 Received Restaurants:", restaurants);
 
-    const restaurantList = document.getElementById("results");
+    const restaurantList = document.getElementById("results"); // Ensure this ID exists
     restaurantList.innerHTML = ""; // Clear previous results
 
     if (!restaurants || restaurants.length === 0) {
+        console.log("⚠️ No restaurants found.");
         restaurantList.innerHTML = "<li>No restaurants found.</li>";
         return;
     }
 
-    restaurants.forEach((restaurant) => {
-        console.log("🏠 Processing Restaurant:", restaurant.name);
+    restaurants.forEach((restaurant, index) => {
+        console.log(`📌 Processing Restaurant #${index + 1}:`, restaurant.name);
 
         const li = document.createElement("li");
+
         const link = document.createElement("a");
         link.href = `restaurant-detail.html?place_id=${restaurant.place_id}`;
         link.textContent = restaurant.name;
         link.style.display = "block";
         link.style.padding = "10px";
         link.style.textDecoration = "none";
-        link.style.color = "#007BFF";
+        link.style.color = "#007BFF"; // Bootstrap blue
         link.style.fontWeight = "bold";
 
         li.appendChild(link);
@@ -164,13 +162,6 @@ function displayRestaurants(restaurants) {
         }
 
         restaurantList.appendChild(li);
-
-        // Add a marker on the map for each restaurant
-        new google.maps.Marker({
-            position: restaurant.geometry.location,
-            map: map,
-            title: restaurant.name,
-        });
     });
 }
 
