@@ -4,6 +4,7 @@ let map;
 let service;
 let infowindow;
 
+// Fetch API Key from Netlify Functions
 fetch('/.netlify/functions/getApiKey')
     .then(response => response.json())
     .then(data => {
@@ -26,7 +27,6 @@ fetch('/.netlify/functions/getApiKey')
     })
     .catch(error => console.error("❌ Error fetching API key:", error));
 
-
 // 3️⃣ Initialize the map
 function initMap() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -43,7 +43,7 @@ function initMap() {
 
 // 4️⃣ Function to initialize the main page
 function initializeMainPage() {
-    const defaultLocation = { lat: 47.6062, lng: -122.3321 }; //Seattle WA
+    const defaultLocation = { lat: 47.6062, lng: -122.3321 }; // Seattle, WA
     
     map = new google.maps.Map(document.getElementById('map'), {
         center: defaultLocation,
@@ -57,15 +57,16 @@ function initializeMainPage() {
         if (locationInput) {
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ address: locationInput }, (results, status) => {
-                console.log("Geocoder status:", status);
-                console.log("Geocoder results:", results);
+                console.log("📌 Geocoder status:", status);
+                console.log("📊 Geocoder results:", results);
 
                 if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
-                    const lat = results[0].geometry.location.lat();
-                    const lng = results[0].geometry.location.lng();
-                    const location = { lat, lng };
+                    const location = {
+                        lat: results[0].geometry.location.lat(),
+                        lng: results[0].geometry.location.lng(),
+                    };
 
-                    console.log("Geocoded location:", location);
+                    console.log("📍 Geocoded location:", location);
                     searchNearbyRestaurants(location);
                 } else {
                     alert('Geocoding failed: ' + status);
@@ -84,42 +85,54 @@ function searchNearbyRestaurants(location) {
         return;
     }
 
+    console.log("📡 Search Request Received - Location:", location);
+
     const latLng = new google.maps.LatLng(location.lat, location.lng);
     map.setCenter(latLng);
 
-    const request = {
-        location: latLng,
-        radius: 10000,  // ⬆️ Increased radius for wider search area
-        type: ["restaurant"]
-    };
-
     if (!service) {
+        console.log("ℹ️ Initializing PlacesService...");
         service = new google.maps.places.PlacesService(map);
     }
 
-    // 🔍 **LOG THE REQUEST** (Debugging Step)
+    const request = {
+        location: latLng,
+        radius: 1500,
+        type: ["restaurant"]
+    };
+
     console.log("📡 Sending Places API Request:", request);
 
-    service.nearbySearch(request, (results, status) => {
-        console.log("🔍 Nearby Search Status:", status);
-        console.log("📊 Full API Response:", results);
+    // ✅ Wrap nearbySearch in a Promise to properly catch errors
+    new Promise((resolve, reject) => {
+        service.nearbySearch(request, (results, status) => {
+            console.log("🔍 Nearby Search Status:", status);
+            console.log("📊 API Response:", results);
 
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            console.log("✅ Restaurants Found:", results);
-            displayRestaurants(results);
-        } else {
-            console.error(`❌ Google Places API Error: ${status}`);
-            console.error("🔴 Full API Response:", JSON.stringify(results, null, 2)); // Force JSON output
-            alert(`Google Places API Error: ${status}\nCheck Console for Details`);
-        }
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                console.log("✅ Restaurants Found:", results);
+                resolve(results);
+            } else {
+                console.error(`❌ Google Places API Error: ${status}`);
+                console.error("🔴 Full API Response:", JSON.stringify(results, null, 2));
+
+                reject(new Error(`Google Places API Error: ${status}`));
+            }
+        });
+    })
+    .then(results => {
+        displayRestaurants(results);
+    })
+    .catch(error => {
+        console.error("⚠️ Promise Rejected:", error);
+        alert(`Google Places API Error: ${error.message}`);
     });
 }
 
 
-
 // 6️⃣ Function to display restaurants (runs AFTER search)
 function displayRestaurants(restaurants) {
-    console.log("Received Restaurants:", restaurants);
+    console.log("✅ Received Restaurants:", restaurants);
 
     const restaurantList = document.getElementById("results");
     restaurantList.innerHTML = ""; // Clear previous results
@@ -130,25 +143,23 @@ function displayRestaurants(restaurants) {
     }
 
     restaurants.forEach((restaurant) => {
-        console.log("Processing Restaurant:", restaurant.name);
+        console.log("🏠 Processing Restaurant:", restaurant.name);
 
         const li = document.createElement("li");
-
-        // Create a clickable link for the restaurant
         const link = document.createElement("a");
         link.href = `restaurant-detail.html?place_id=${restaurant.place_id}`;
         link.textContent = restaurant.name;
         link.style.display = "block";
         link.style.padding = "10px";
         link.style.textDecoration = "none";
-        link.style.color = "#007BFF"; // Bootstrap blue
+        link.style.color = "#007BFF";
         link.style.fontWeight = "bold";
 
         li.appendChild(link);
 
         if (restaurant.vicinity) {
             const address = document.createElement("p");
-            address.textContent = `Address: ${restaurant.vicinity}`;
+            address.textContent = `📍 Address: ${restaurant.vicinity}`;
             li.appendChild(address);
         }
 
@@ -168,16 +179,17 @@ function getUserLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     } else {
-        alert('Geolocation is not supported by this browser.');
+        alert('❌ Geolocation is not supported by this browser.');
     }
 }
 
 // 8️⃣ Success callback for geolocation
 function successCallback(position) {
-    const lat = position.coords.latitude;
-    const lng = position.coords.longitude;
-    console.log('User location: ', lat, lng);
-    const location = { lat, lng };
+    const location = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+    };
+    console.log("📍 User location:", location);
 
     map.setCenter(location);
     searchNearbyRestaurants(location);
@@ -185,7 +197,7 @@ function successCallback(position) {
 
 // 9️⃣ Error callback for geolocation
 function errorCallback(error) {
-    alert(`Geolocation Error: ${error.message}`);
+    alert(`❌ Geolocation Error: ${error.message}`);
 }
 
 // 🔟 Function to initialize the restaurant details page
@@ -209,16 +221,16 @@ function handlePlaceDetails(place, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         document.getElementById("restaurant-name").textContent = place.name;
         document.getElementById("restaurant-address").textContent = place.formatted_address;
-        document.getElementById("restaurant-rating").textContent = `Rating: ${place.rating || "N/A"}`;
+        document.getElementById("restaurant-rating").textContent = `⭐ Rating: ${place.rating || "N/A"}`;
 
         if (place.formatted_phone_number) {
-            document.getElementById("restaurant-phone").textContent = `Phone: ${place.formatted_phone_number}`;
+            document.getElementById("restaurant-phone").textContent = `📞 Phone: ${place.formatted_phone_number}`;
         }
 
         if (place.website) {
             const websiteElement = document.getElementById("restaurant-url").firstElementChild;
             websiteElement.href = place.website;
-            websiteElement.textContent = "Visit Website";
+            websiteElement.textContent = "🌍 Visit Website";
         }
 
         map.setCenter(place.geometry.location);
@@ -229,7 +241,7 @@ function handlePlaceDetails(place, status) {
             title: place.name,
         });
     } else {
-        console.error("Failed to fetch place details:", status);
+        console.error("❌ Failed to fetch place details:", status);
     }
 }
 
