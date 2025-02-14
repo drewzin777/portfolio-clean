@@ -128,9 +128,9 @@ function searchNearbyRestaurants(location) {
 
 // 6️⃣ Function to display restaurants (runs AFTER search)
 function displayRestaurants(restaurants) {
-    console.log("📃 Received Restaurants:", restaurants);
+    console.log("📃 displayRestaurants() called with:", restaurants);
 
-    const restaurantList = document.getElementById("results"); // Ensure this ID exists
+    const restaurantList = document.getElementById("results");
     restaurantList.innerHTML = ""; // Clear previous results
 
     if (!restaurants || restaurants.length === 0) {
@@ -143,6 +143,7 @@ function displayRestaurants(restaurants) {
         console.log(`📌 Processing Restaurant #${index + 1}:`, restaurant.name);
 
         const li = document.createElement("li");
+        li.classList.add("restaurant-item");
 
         const link = document.createElement("a");
         link.href = `restaurant-detail.html?place_id=${restaurant.place_id}`;
@@ -163,7 +164,10 @@ function displayRestaurants(restaurants) {
 
         restaurantList.appendChild(li);
     });
+
+    console.log("✅ Restaurant list successfully updated!");
 }
+
 
 // 7️⃣ Function to get the user's location
 function getUserLocation() {

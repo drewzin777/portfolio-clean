@@ -14,7 +14,11 @@ module.exports.handler = async () => {
         console.log("✅ API Key Found!");
         return {
             statusCode: 200,
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*", // Allows any website to access this API key
+                "Access-Control-Allow-Methods": "GET, OPTIONS",
+            },
             body: JSON.stringify({ apiKey: process.env.GOOGLE_MAPS_API_KEY }),
         };
     } catch (error) {
@@ -22,10 +26,12 @@ module.exports.handler = async () => {
 
         return {
             statusCode: 500,
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, OPTIONS",
+            },
             body: JSON.stringify({ error: error.message }),
         };
     }
 };
-
-
