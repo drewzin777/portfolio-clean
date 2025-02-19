@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles.css">
     <!--link to font awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
+
 </head>
 <body>
     <div id="logo">
@@ -22,10 +22,30 @@
     </div>
 
     <div id="map"></div> 
-    <ul id="results"></ul>
+    <ul id="results">
+        
+    </ul>
 
     
     <!--link to the external JS file-->
-    <script src="/app.js"></script>
+    <script src="app.js"></script>
+
+    <script>
+        fetch('/.netlify/functions/getApiKey')
+            .then(response => response.json())
+            .then(data => {
+                if (data.apiKey) {
+                    const script = document.createElement('script');
+                    script.src = `https://maps.googleapis.com/maps/api/js?key=${data.apiKey}&libraries=places&callback=initMap`;
+                    script.async = true;
+                    script.defer = true;
+                    document.body.appendChild(script);
+                    console.log("✅ Google Maps API script added successfully.");
+                } else {
+                    console.error("❌ API key not found. Check Netlify environment variables.");
+                }
+            })
+            .catch(error => console.error("❌ Error fetching API key:", error));
+    </script>
 </body> 
 </html>
