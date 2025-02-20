@@ -36,16 +36,28 @@
             .then(data => {
                 if (data.apiKey) {
                     const script = document.createElement('script');
-                    script.src = `https://maps.googleapis.com/maps/api/js?key=${data.apiKey}&libraries=places&callback=initMap`;
+                    script.src = `https://maps.googleapis.com/maps/api/js?key=${data.apiKey}&libraries=places`;
                     script.async = true;
                     script.defer = true;
+    
+                    // Make sure `initMap()` runs only when Google Maps is fully loaded
+                    script.onload = () => {
+                        console.log("✅ Google Maps API script loaded successfully.");
+                        if (typeof initMap === "function") {
+                            initMap();
+                        } else {
+                            console.error("❌ initMap is not defined. Check app.js.");
+                        }
+                    };
+    
                     document.body.appendChild(script);
-                    console.log("✅ Google Maps API script added successfully.");
                 } else {
                     console.error("❌ API key not found. Check Netlify environment variables.");
                 }
             })
             .catch(error => console.error("❌ Error fetching API key:", error));
     </script>
+    
+    
 </body> 
 </html>
