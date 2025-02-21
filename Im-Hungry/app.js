@@ -4,6 +4,7 @@ let service;
 let infowindow; 
 
 function initMap() {
+    console.log("Google Maps API loaded successfully.");
     //get place_Id from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const place_Id = urlParams.get('place_id');
@@ -14,6 +15,7 @@ function initMap() {
         initializeDetailsPage(place_Id);
     } else {
         //if no place_id were on the index(main)page
+        console.log('Initializing Main Page...');
         initializeMainPage();
     }
 }
@@ -132,13 +134,22 @@ function initializeDetailsPage(place_Id) {
 }
 
 //handle search for multiple restaurants(for index.html)
+// ... existing code remains the same until handleResults function ...
+
 function handleResults(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-        document.getElementById('results').innerHTML = ''; //clear previous status
+        document.getElementById('results').innerHTML = ''; 
         
         results.forEach((place) => {
             const li = document.createElement('li');
-            li.textContent = place.name;
+            li.className = 'restaurant-item';
+            
+            // Enhanced restaurant information display
+            li.innerHTML = `
+                <h3>${place.name}</h3>
+                ${place.vicinity ? `<p>${place.vicinity}</p>` : ''}
+                ${place.rating ? `<p>Rating: ${place.rating} ⭐</p>` : ''}
+            `;
 
             li.addEventListener('click', () => {
                 window.location.href = `restaurant-detail.html?place_id=${place.place_id}`;
@@ -146,104 +157,59 @@ function handleResults(results, status) {
 
             document.getElementById('results').appendChild(li);
 
-            //add marker to map
-            const markerElement = new google.maps.Marker({
+            const marker = new google.maps.Marker({
                 position: place.geometry.location,
                 map: map,
                 title: place.name,
             });
+
+            // Add click listener to marker
+            marker.addListener('click', () => {
+                window.location.href = `restaurant-detail.html?place_id=${place.place_id}`;
+            });
         });
     } else if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
-        alert ('No nearby restaurants found. Try searching a different location');
+        document.getElementById('results').innerHTML = '<li>No nearby restaurants found. Try searching a different location</li>';
     } else {
-        alert('Error fetching nearby restaurants. Please check your network connection and try again.');
+        document.getElementById('results').innerHTML = '<li>Error fetching nearby restaurants. Please check your network connection and try again.</li>';
     }
 }
 
-//Handle single restaurant details for (restaurant-detail.html)
+// Add the missing handlePlaceDetails function
 function handlePlaceDetails(place, status) {
-    
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-        //update details on page
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+        // Center map on restaurant location
+        map.setCenter(place.geometry.location);
+        
+        // Create marker for the restaurant
+        new google.maps.Marker({
+            map: map,
+            position: place.geometry.location
+        });
+        
+        // Update page content with restaurant details
         document.getElementById('restaurant-name').textContent = place.name;
         document.getElementById('restaurant-address').textContent = place.formatted_address;
-        document.getElementById('restaurant-rating').textContent = `Rating: ${place.rating || 'N/A'}`;
-
-        //display phone number if available
-        if (place.formatted_phone_number) {
-            document.getElementById('restaurant-phone').textContent = `Phone: ${place.formatted_phone_number}`;
-        }   
-
-        //display website if available
+        document.getElementById('restaurant-phone').textContent = place.formatted_phone_number || 'Not available';
+        document.getElementById('restaurant-rating').textContent = place.rating ? `${place.rating} ⭐` : 'Not rated';
+        
         if (place.website) {
-            const websiteElement = document.getElementById('restaurant-url').firstElementChild;
-            websiteElement.href = place.website; 
-            websiteElement.textContent = 'Visit Website';
-        } else {
-            document.getElementById('restaurant-url').textContent = 'Website not available';
+            const websiteLink = document.getElementById('restaurant-website');
+            websiteLink.href = place.website;
+            websiteLink.textContent = place.website;
         }
-   
-        console.log(place.photos);
-
-        //display photos(3) if available  
+        
         if (place.photos && place.photos.length > 0) {
-            //display first photo
-            const photoUrl1 = place.photos[0].getUrl({ maxWidth: 400, maxHeight: 400 }); 
-            document.getElementById('restaurant-photo1').src = photoUrl1;
-
-            //display second photo
-        if (place.photos.length > 1) {
-            const photoUrl2 = place.photos[1].getUrl({ maxWidth: 400, maxHeight: 400 }); 
-            document.getElementById('restaurant-photo2').src = photoUrl2;
-        } else {
-            document.getElementById('restaurant-photo2').style.display = 'none';
-        }
-
-        //third photo if available
-        if (place.photos.length > 2) {
-            const photoUrl3 = place.photos[2].getUrl({ maxWidth: 400, maxHeight: 400 });
-            document.getElementById('restaurant-photo3').src = photoUrl3;
-        } else {
-            document.getElementById('restaurant-photo3').style.display = 'none';
+            const img = document.getElementById('restaurant-photo');
+            img.src = place.photos[0].getUrl();
+            img.alt = place.name;
         }
     } else {
-            //hide images if photos not available
-            document.getElementById('restaurant-photo1').style.display = 'none'; 
-            document.getElementById('restaurant-photo2').style.display = 'none';
-            document.getElementById('restaurant-photo3').style.display = 'none';
-    }       
-
-        //display hours of operation
-        if (place.opening_hours) {
-            const hoursElement = document.getElementById('restaurant-hours');
-            hoursElement.innerHTML = ''; //clear previous hours
-            place.opening_hours.weekday_text.forEach(day => {
-                const dayElement = document.createElement('p');
-                dayElement.textContent = day;
-                hoursElement.appendChild(dayElement);
-           });
-        } else {
-            document.getElementById('restaurant-hours').textContent = 'Hours not available';
-        }
-
-        //center map on the restaurants location
-        map.setCenter(place.geometry.location);
-
-        //add a marker for the restaurant
-        new google.maps.Marker({
-            position: place.geometry.location,
-            map: map,
-            title: place.name,
-        });
-    } else {
-        console.error('Failed to get place details ', status);
+        console.error('Error fetching restaurant details:', status);
+        alert('Error fetching restaurant details. Please try again later.');
     }
 }
 
-
-//initialize map when page loads
-window.onload = initMap;
-
-
+//window.onload = initMap;
 
 
