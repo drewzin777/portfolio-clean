@@ -3,6 +3,9 @@ let map;
 let service;  
 let infowindow; 
 
+console.log("Your API Key: ", "AIzaSyBWJBYBSWIoDNaP2Se9Rs-rmGTiOfH2iEI");
+
+
 function initMap() {
     //get place_Id from the URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -242,8 +245,24 @@ function handlePlaceDetails(place, status) {
 
 
 //initialize map when page loads
-window.onload = initMap;
+window.onload = function () {
+    if (typeof google !== "undefined") {
+        initMap();
+    } else {
+        console.log("Loading Google Maps API dynamically...");
 
+        const script = document.createElement("script");
+        script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&libraries=places`;
+        script.async = true;
+        script.defer = true;
+        
+        script.onerror = function () {
+            console.error("Failed to load Google Maps API. Check your API key and network connection.");
+        };
+
+        document.head.appendChild(script);
+    }
+};
 
 
 
