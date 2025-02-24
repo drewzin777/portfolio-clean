@@ -1,12 +1,11 @@
 
 
 [build]
-  functions = "netlify/functions"  # Ensure Netlify looks for functions here
-
+  publish = "."
+  command = "# no build command needed"
+  
 [dev]
   # Change if you use a different start command
   port = 8888  # Default Netlify Dev port
   targetPort = 3000  # Change if your app runs on a different port
 
-[functions]
-  node_bundler = "esbuild"  # Ensures Netlify properly bundles your functions
