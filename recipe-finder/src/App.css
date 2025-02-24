@@ -1,0 +1,37 @@
+.App {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+.App-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 2rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+}
+
+.recipe-card {
+  background: var(--card-background);
+  border: 2px solid #eee;
+}
+
+.recipe-card h3 {
+  color: var(--primary-color);
+}
+
+.recipe-card p {
+  color: var(--text-secondary);
+}
+
+.view-recipe {
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  transition: transform 0.3s ease;
+}
+
+.view-recipe:hover {
+  background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+  transform: translateY(-2px);
+}
