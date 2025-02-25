@@ -1,15 +1,11 @@
 :root {
-  --primary-color: #8e6e53; /* Warm Taupe */
-  --secondary-color: #c5a880; /* Soft Beige */
-  --accent-color: #f4eae0; /* Light Cream */
-  --background-color: #f7f3ee; /* Neutral Taupe */
-  --card-background: #ffffff; /* White */
-  --text-primary: #3c3c3c; /* Deep Taupe */
-  --text-secondary: #6b6b6b; /* Medium Taupe */
-  --shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft Shadow */
+  --primary-color: #FF6F00;   /* Spicy Orange */
+  --secondary-color: #58A700; /* Fresh Green */
+  --background-color: #FAF3E0; /* Soft Cream White */
+  --card-background: #FFF2D7; /* Warm Beige */
+  --text-primary: #4E342E; /* Rich Brown */
+  --hover-color: #D84315; /* Deep Red */
 }
-
-
 * {
   margin: 0;
   padding: 0;
@@ -17,10 +13,9 @@
 }
 
 body {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: var(--background-color);
   color: var(--text-primary);
-  line-height: 1.6;
 }
 
 .container {
@@ -83,8 +78,10 @@ body {
 }
 
 .recipe-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: var(--shadow);
+  background: var(--card-background);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .recipe-card:hover {
@@ -142,32 +139,17 @@ body {
   border: 2px solid var(--primary-color);
 }
 
-.search-button {
+.search-button, .view-recipe {
+  background: var(--primary-color);
+  color: white;
   padding: 12px 20px;
-  font-size: 1.2rem;
+  font-weight: bold;
   border-radius: 8px;
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  transition: background 0.3s ease;
-}
+  transition: 0.3s ease;
+} 
 
-.search-button:hover {
-  background: var(--secondary-color);
-}
-
-
-.view-recipe {
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  transition: background 0.3s ease;
-}
-
-.view-recipe:hover {
-  background: var(--secondary-color);
+.search-button:hover, .view-recipe:hover {
+  background: var(--hover-color);
 }
 
 .modal-overlay {
@@ -183,14 +165,12 @@ body {
   z-index: 1000;
 }
 
+/* Modal */
 .modal-content {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 15px;
-  max-width: 600px;
-  width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .modal-header {

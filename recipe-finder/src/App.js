@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-
 function App() {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -16,15 +15,12 @@ function App() {
       }
     };
 
-
     document.addEventListener("keydown", handleKeyDown);
-
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -52,7 +48,7 @@ function App() {
     } catch (error) {
       console.error('Error fetching recipes:', error);
     } finally {
-      setLoading(false);    //Stop Loading once fetch is complete
+      setLoading(false);
     }
   };
 
@@ -64,7 +60,6 @@ function App() {
       );
       const data = await response.json();
 
-      // Make sure the instructions are properly formatted
       setSelectedRecipe({
         title: data.title,
         readyInMinutes: data.readyInMinutes,
@@ -91,7 +86,6 @@ function App() {
         </header>
 
         <main>
-          {/* Search Form */}
           <form onSubmit={handleSearch} className="search-form">
             <div className="search-controls">
               <label htmlFor="search" className="search-label">Search by Ingredients:</label>
@@ -103,13 +97,6 @@ function App() {
                 placeholder="e.g., chicken, rice, garlic"
                 className="search-input"
               />
-
-              {/* Clear Button */}
-              <button type="button" className="clear-button" onClick={() => setSearchTerm("")}>
-                Clear
-              </button>
-
-              {/* Cuisine Dropdown */}
               <select
                 value={cuisine}
                 onChange={(e) => setCuisine(e.target.value)}
@@ -117,23 +104,22 @@ function App() {
               >
                 <option value="any">Any Cuisine</option>
                 <option value="italian">Italian</option>
-                <option value="american">American</option>
                 <option value="mexican">Mexican</option>
                 <option value="asian">Asian</option>
+                <option value="american">American</option>
+                <option value="chinese">Chinese</option>
                 <option value="french">French</option>
                 <option value="greek">Greek</option>
                 <option value="indian">Indian</option>
-
-
+                <option value="japanese">Japanese</option>
+                <option value="korean">Korean</option>
               </select>
               <button type="submit" className="search-button">Find Recipes</button>
             </div>
           </form>
 
-          {/* Loading Indecator */}
           {loading && <p className="loading-text">Loading recipes...</p>}
 
-          {/* Recipe Cards */}
           <div className="recipes-container">
             {recipes.map(recipe => (
               <div key={recipe.id} className="recipe-card">
@@ -155,7 +141,6 @@ function App() {
         </main>
       </div>
 
-      {/* Recipe Modal */}
       {selectedRecipe && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -178,6 +163,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;
