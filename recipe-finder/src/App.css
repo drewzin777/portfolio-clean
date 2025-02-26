@@ -1,6 +1,6 @@
 :root {
-  --primary-color: #FF6F00;   /* Spicy Orange */
-  --secondary-color: #58A700; /* Fresh Green */
+  --primary-color: #E67E22;   /* Lighter Orange for Buttons */
+  --secondary-color: #2E5734; /* Hunter Green for Header */
   --background-color: #FAF3E0; /* Soft Cream White */
   --card-background: #FFF2D7; /* Warm Beige */
   --text-primary: #4E342E; /* Rich Brown */
@@ -12,35 +12,48 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: var(--background-color);
-  color: var(--text-primary);
-}
-
-.container {
-  width: 100%;
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
-  padding: 20px; 
 }
-
-.App {
-  width: 100%;
-  max-width: 1200px;
-  padding: 40px;
-  margin: 0 auto;
-}
-
 
 .App-header {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: linear-gradient(135deg, var(--secondary-color), var(--secondary-color));
   color: white;
   text-align: center;
   padding: 2rem;
-  border-radius: 10px;
+  border-radius: 0; /* ✅ Remove rounded corners */
+  width: 100%; /* ✅ Ensure it spans the full width */
+  position: relative;
+}
+
+
+.App-header h1 {
+  font-size: 3rem;  
+  font-weight: bold;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; 
+}
+
+.App-header h1 i {
+  font-size: 2.5rem; /*  Increase the size of the icon */
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+  flex-grow: 1;
+}
+
+.App {
+  flex: 1; /* Makes the main content take up the remaining space */
 }
 
 .search-form {
@@ -53,7 +66,7 @@ body {
 }
 
 .clear-button {
-  background-color: var(--secondary-color);
+  background-color: var(--hover-color);
   color: white;
   padding: 10px 16px;
   font-size: 1rem;
@@ -78,10 +91,8 @@ body {
 }
 
 .recipe-card {
-  background: var(--card-background);
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: var(--shadow);
 }
 
 .recipe-card:hover {
@@ -139,17 +150,32 @@ body {
   border: 2px solid var(--primary-color);
 }
 
-.search-button, .view-recipe {
+.search-button {
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  border-radius: 8px;
   background: var(--primary-color);
   color: white;
-  padding: 12px 20px;
-  font-weight: bold;
-  border-radius: 8px;
-  transition: 0.3s ease;
-} 
+  border: none;
+  transition: background 0.3s ease;
+}
 
-.search-button:hover, .view-recipe:hover {
-  background: var(--hover-color);
+.search-button:hover {
+  background: var(--secondary-color);
+}
+
+
+.view-recipe {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.view-recipe:hover {
+  background: var(--secondary-color);
 }
 
 .modal-overlay {
@@ -165,12 +191,14 @@ body {
   z-index: 1000;
 }
 
-/* Modal */
 .modal-content {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  background-color: white;
+  padding: 2rem;
+  border-radius: 15px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .modal-header {
@@ -219,38 +247,54 @@ body {
   color: var(--primary-color);
 }
 
+/* Style footer to stay at the bottom */
+.App-footer {
+  text-align: center;
+  background: var(--secondary-color); /* Hunter Green */
+  color: white;
+  padding: 1rem;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Responsive Design Fix */
+
+/* Ensure `.recipes-container` adjusts dynamically */
+@media (max-width: 1024px) {
+  .recipes-container {
+    grid-template-columns: repeat(2, 1fr); /* Show 2 cards per row */
+  }
+}
 
 @media (max-width: 768px) {
   .recipes-container {
     grid-template-columns: 1fr; /* Show 1 card per row */
   }
 
-  .recipe-card {
-    max-width: 100%; /* Take full width on small screens */
-  }
-
-  .modal-content {
-    width: 95%; /* Ensure modal is well-adjusted for small screens */
+  .search-input,
+  .cuisine-select,
+  .search-button {
+    width: 100%; /* Make inputs full width */
   }
 }
 
+/* Adjust Header & Footer */
 @media (max-width: 768px) {
   .App-header {
     font-size: 1.5rem;
     padding: 1.5rem;
   }
+  .App-footer {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
 }
 
-.view-recipe {
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-
+/* Adjust View Recipe Button on Small Screens */
 @media (max-width: 480px) {
   .view-recipe {
     font-size: 0.9rem;
     padding: 10px 16px;
   }
 }
-

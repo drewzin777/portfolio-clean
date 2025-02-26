@@ -8,6 +8,11 @@ function App() {
   const [recipes, setRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
+  // ✅ Move closeModal above useEffect to fix undefined reference
+  const closeModal = () => {
+    setSelectedRecipe(null);
+  };
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
@@ -16,11 +21,10 @@ function App() {
     };
 
     document.addEventListener("keydown", handleKeyDown);
-
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, []); // ✅ Now useEffect will work correctly
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -73,15 +77,11 @@ function App() {
     }
   };
 
-  const closeModal = () => {
-    setSelectedRecipe(null);
-  };
-
   return (
     <div className="container">
       <div className="App">
         <header className="App-header">
-          <h1>Recipe Finder</h1>
+          <h1><i className="fas fa-utensils"></i> Recipe Finder</h1>
           <p className="header-subtitle">Find delicious recipes with ingredients you have</p>
         </header>
 
@@ -97,6 +97,15 @@ function App() {
                 placeholder="e.g., chicken, rice, garlic"
                 className="search-input"
               />
+
+              <button
+                type="button"
+                className="clear-button"
+                onClick={() => setSearchTerm("")}
+              >
+                Clear
+              </button>
+
               <select
                 value={cuisine}
                 onChange={(e) => setCuisine(e.target.value)}
@@ -160,6 +169,13 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* ✅ Footer is now properly placed inside the container */}
+      <footer className="App-footer">
+        <p>© 2024 Recipe Finder | Created by Andrew</p>
+        <p>🍽️ "Good food is good mood." </p>
+      </footer>
+
     </div>
   );
 }
