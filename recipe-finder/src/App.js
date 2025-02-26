@@ -80,7 +80,8 @@ function App() {
   return (
     <div className="container">
       <div className="App">
-        <header className="App-header">
+        <header className="App-header"> 
+          <img src="/img/recipe-finder-logo.png" alt="Recipe Finder Logo" className="header-logo" />
           <h1><i className="fas fa-utensils"></i> Recipe Finder</h1>
           <p className="header-subtitle">Find delicious recipes with ingredients you have</p>
         </header>
