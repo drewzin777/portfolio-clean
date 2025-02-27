@@ -1,7 +1,7 @@
 
 
 [build]
-  publish = "."
+  publish = "build1"
   command = "# no build command needed"
   
 [dev]
