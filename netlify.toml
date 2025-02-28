@@ -1,8 +1,8 @@
 
 
 [build]
-  publish = "build1"
-  command = "# no build command needed"
+  publish = "build"
+  command = "npm run build"
   
 [dev]
   # Change if you use a different start command
