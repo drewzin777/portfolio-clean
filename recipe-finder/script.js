@@ -1,20 +1,28 @@
-const API_URL = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
-
-document.getElementById("searchBtn").addEventListener("click", () => {
-    let query = document.getElementById("search").value;
-    if (query) {
-        fetchRecipes(query);
+document.getElementById("searchBtn").addEventListener("click", searchRecipe);
+document.getElementById("search").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        searchRecipe();
     }
 });
 
-async function fetchRecipes(query) {
-    try {
-        const response = await fetch(API_URL + query);
-        const data = await response.json();
-        displayResults(data.meals);
-    } catch (error) {
-        console.error("Error fetching data:", error);
+function searchRecipe() {
+    const query = document.getElementById("search").value.trim();
+    if (query === "") {
+        alert("Please enter a recipe name!");
+        return;
     }
+
+    document.getElementById("results").innerHTML = "<p>Loading recipes...</p>";
+
+    fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`)
+        .then(response => response.json())
+        .then(data => {
+            displayResults(data.meals);
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+            document.getElementById("results").innerHTML = "<p>Something went wrong. Please try again!</p>";
+        });
 }
 
 function displayResults(meals) {
@@ -26,16 +34,23 @@ function displayResults(meals) {
         return;
     }
 
-    // Display ALL meals in the response
     meals.forEach(meal => {
         const mealCard = document.createElement("div");
         mealCard.classList.add("recipe-card");
+
+        // Check if the meal has a valid source link
+        let recipeLink = meal.strSource ? 
+            `<a href="${meal.strSource}" class="view-recipe" target="_blank">View Recipe</a>` 
+            : `<a href="https://www.google.com/search?q=${meal.strMeal} recipe" class="view-recipe" target="_blank">Search Recipe</a>`;
+
         mealCard.innerHTML = `
             <h2>${meal.strMeal}</h2>
-            <img src="${meal.strMealThumb}" alt="${meal.strMeal}" width="250">
+            <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
             <p><strong>Category:</strong> ${meal.strCategory}</p>
-            <p><strong>Instructions:</strong> ${meal.strInstructions.substring(0, 150)}...</p>
+            <p>${meal.strInstructions.substring(0, 100)}...</p>
+            ${recipeLink} <!-- Displays "View Recipe" if a link exists, otherwise "Search Recipe" -->
         `;
+
         resultsDiv.appendChild(mealCard);
     });
 }
